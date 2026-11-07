@@ -2,7 +2,7 @@
 
 Registrant: anonymous (identity withheld for peer review; see the registration)
 Date prepared: 4 November 2026. No confirmatory data have been collected at the time of registration (Section 8 describes the smoke tests).
-Related exploratory study: "Language models rate a manuscript by who is asking" (code: https://github.com/tusu-code/ownership-framing).
+Related exploratory study: "Language models rate a manuscript by who is asking" (code: released with this repository).
 
 ## 1. Background and aim
 
