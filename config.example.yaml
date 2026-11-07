@@ -1,0 +1,53 @@
+# Copy to config.yaml. API keys are read from the environment (see .env.example); never put them in this file.
+# Every model is called through an OpenAI-compatible endpoint (Claude models through the Anthropic messages API).
+
+sample_file: sample_pilot.csv
+conditions: [neutral, author, reviewer]
+reps: 2
+seed: 20261025
+retries: 4
+max_tokens_review: 16000
+max_tokens_probe: 300
+max_calls_per_run: 100000
+
+# Main study: every paper once per condition.
+p2_conditions: [open_author, open_reviewer, struct_author, struct_reviewer]
+p2_reps: 2
+p3_sample_file: sample_full.csv
+p3_reps: 1
+max_tokens_open: 12000
+disguise_model: dsflash        # rewrites manuscripts and neutralizes answers
+judge_model: dsflash           # blind reader used by run_p3_judge.py
+
+defaults:
+  api: openai
+  base_url: https://YOUR-ENDPOINT/v1
+  temperature: 0
+  concurrency: 4
+  timeout_s: 600
+
+models:
+  claude:   {model: claude-sonnet-4-6, api: anthropic, base_url: https://YOUR-ENDPOINT, api_key_env: CLAUDE_API_KEY, concurrency: 2}
+  gemini:   {model: gemini-4-argon, api_key_env: GEMINI_API_KEY, stream: true, max_tokens_open: 32000, max_tokens_review: 32000}
+  gemini38: {model: gemini-3.8-flash, api_key_env: GEMINI_API_KEY, stream: true, enabled: false}   # recognition test only
+  gpt:
+    model: gpt-6.1-sol
+    api_key_env: GPT_API_KEY
+    temperature: null              # the model rejects a temperature setting
+    max_tokens_field: max_completion_tokens
+    store_false: true
+    extra_body: {tool_choice: none}
+  glm:      {model: glm-5.3, api_key_env: GLM_API_KEY, concurrency: 1}
+  deepseek: {model: deepseek-v4-pro, api_key_env: DEEPSEEK_API_KEY, stream: true, max_tokens_open: 32000}
+  grok:     {model: grok-4.7, api_key_env: GROK_API_KEY, stream: true, max_tokens_open: 32000, max_tokens_review: 32000}
+  # Helper models (not evaluated)
+  dsflash:
+    model: deepseek-v4.1-flash
+    enabled: false
+    api_key_env: DEEPSEEK_API_KEY
+    stream: true
+    timeout_s: 300
+    extra_body: {reasoning_effort: none}   # otherwise hidden reasoning uses the whole output budget
+  haiku:    {model: claude-haiku-4-5-20251001, enabled: false, api: anthropic, base_url: https://YOUR-ENDPOINT, api_key_env: CLAUDE_API_KEY, timeout_s: 300}
+  minimax:  {model: minimax-m3.1-flash, enabled: false, api_key_env: MINIMAX_API_KEY, timeout_s: 300}
+  mock:     {model: mock, mock: true, enabled: false}   # pipeline test: python src/run.py smoke --model mock

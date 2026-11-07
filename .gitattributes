@@ -1,0 +1,4 @@
+# The frozen manifests (*/FROZEN.sha256) record the bytes as distributed. Keep
+# the data files byte-exact so `sha256sum -c */FROZEN.sha256` passes on any
+# platform (they are CRLF; a checkout conversion would change their hash).
+*/data/*.csv -text

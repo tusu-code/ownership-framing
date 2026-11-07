@@ -1,0 +1,27 @@
+.env
+config.yaml
+venv/
+__pycache__/
+*.pyc
+tmp/
+tmux/
+logs/
+tiktoken_cache/
+# inputs and outputs: manuscripts are not redistributed; model outputs are released separately
+/data/
+full_study/
+*/data/pdfs/
+*/data/text/
+*/data/converted.jsonl
+*/data/manuscripts.jsonl
+*/data/arxiv_authors*.json
+*/results/
+*/results_*/
+extend/out/
+human_eval/
+paper/icons/pdf/
+paper/icons/png/
+paper/figs/*.pdf
+paper/figs/*.png
+paper/tables/
+paper/numbers*.tex

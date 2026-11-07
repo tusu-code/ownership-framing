@@ -1,0 +1,136 @@
+field,order,arxiv_id,status,tokens,truncated,role
+biology,0,2605.04117,ok,16000,1,smoke
+biology,1,2604.12671,ok (abstract from arXiv metadata),5981,0,sample
+biology,2,2606.16726,ok,6277,0,sample
+biology,3,2609.35933,ok (abstract from arXiv metadata),8555,0,sample
+biology,4,2606.12573,ok,16000,1,sample
+biology,5,2607.15104,ok,13784,0,sample
+biology,6,2605.14812,ok,15887,0,sample
+biology,7,2608.27012,too short (3369 tokens),3369,0,
+biology,8,2608.18387,ok,16000,1,sample
+biology,9,2607.28053,ok (abstract from arXiv metadata),16000,1,sample
+biology,10,2611.00161,ok,13808,0,sample
+biology,11,2605.11028,excluded: thesis or dissertation,40507,0,
+biology,12,2608.15356,ok (abstract from arXiv metadata),16000,1,sample
+biology,13,2607.03545,ok (abstract from arXiv metadata),11033,0,sample
+biology,14,2610.38615,ok,14392,0,sample
+biology,15,2609.13349,ok (abstract from arXiv metadata),7635,0,sample
+biology,16,2607.11820,ok,16000,1,sample
+biology,17,2606.10109,no abstract,0,0,
+biology,18,2604.18622,ok,16000,1,sample
+biology,19,2606.23470,ok,10200,0,sample
+biology,20,2607.04160,ok,16000,1,sample
+biology,21,2610.05419,ok,8110,0,sample
+biology,22,2604.02057,ok (abstract from arXiv metadata); numbered references cut,4576,0,sample
+biology,23,2607.14000,ok (abstract from arXiv metadata); numbered references cut,14010,0,sample
+biology,24,2609.33307,ok,12019,0,sample
+biology,25,2606.10605,ok,9387,0,sample
+biology,26,2606.15357,excluded: publication notice left in text (Oxford University Press),10008,0,
+biology,27,2607.04063,download failed or over 10 MB,0,0,
+biology,28,2605.17220,ok (abstract from arXiv metadata),8253,0,sample
+biology,29,2604.21662,ok,9450,0,sample
+biology,30,2608.03181,ok,13918,0,sample
+biology,31,2609.37355,ok (abstract from arXiv metadata); numbered references cut,16000,1,sample
+biology,32,2611.00360,ok (abstract from arXiv metadata),8870,0,sample
+biology,33,2605.10979,ok,6151,0,sample
+biology,34,2610.40436,too short (3801 tokens),3801,0,
+biology,35,2606.16041,ok,14705,0,sample
+biology,36,2609.13310,download failed or over 10 MB,0,0,
+biology,37,2605.16466,ok,6673,0,sample
+biology,38,2609.24157,ok,11161,0,sample
+biology,39,2609.00809,ok,11379,0,sample
+biology,40,2607.19316,download failed or over 10 MB,0,0,
+biology,41,2606.18575,download failed or over 10 MB,0,0,
+biology,42,2610.38075,ok,16000,1,sample
+biology,43,2605.25523,ok (abstract from arXiv metadata),16000,1,sample
+physics,0,2607.29395,ok (abstract from arXiv metadata),8295,0,smoke
+physics,1,2608.09041,ok,9914,0,sample
+physics,2,2607.08585,ok (abstract from arXiv metadata),12990,0,sample
+physics,3,2611.00443,ok (abstract from arXiv metadata),10151,0,sample
+physics,4,2606.10754,ok (abstract from arXiv metadata),7436,0,sample
+physics,5,2610.23585,download failed or over 10 MB,0,0,
+physics,6,2604.21732,download failed or over 10 MB,0,0,
+physics,7,2606.02527,numbered references cut,4132,0,sample
+physics,8,2605.16888,no abstract,0,0,
+physics,9,2608.03568,ok,4252,0,sample
+physics,10,2607.25673,ok (abstract from arXiv metadata),9719,0,sample
+physics,11,2608.19044,no abstract,0,0,
+physics,12,2607.06135,ok,16000,1,sample
+physics,13,2610.21777,ok,16000,1,sample
+physics,14,2610.03274,ok (abstract from arXiv metadata),4964,0,sample
+physics,15,2605.11895,ok (abstract from arXiv metadata),16000,1,sample
+physics,16,2610.16659,ok (abstract from arXiv metadata); numbered references cut,16000,1,sample
+physics,17,2610.19833,excluded: author-contribution statement and references left after the cut,15455,0,
+physics,18,2610.05620,download failed or over 10 MB,0,0,
+physics,19,2609.09296,ok (abstract from arXiv metadata),10539,0,sample
+physics,20,2608.00467,no abstract,0,0,
+physics,21,2610.29440,ok (abstract from arXiv metadata); numbered references cut,8690,0,sample
+physics,22,2609.01831,ok,8480,0,sample
+physics,23,2605.24198,ok,9374,0,sample
+physics,24,2610.00681,ok (abstract from arXiv metadata),9147,0,sample
+physics,25,2609.24247,ok (abstract from arXiv metadata); numbered references cut,12057,0,sample
+physics,26,2610.02566,download failed or over 10 MB,0,0,
+physics,27,2605.09690,ok,6713,0,sample
+physics,28,2605.20869,download failed or over 10 MB,0,0,
+physics,29,2610.25537,no abstract,0,0,
+physics,30,2607.02171,ok (abstract from arXiv metadata),16000,1,sample
+physics,31,2610.12892,no abstract,0,0,
+physics,32,2610.02883,ok (abstract from arXiv metadata),8057,0,sample
+physics,33,2606.03235,no abstract,0,0,
+physics,34,2608.05908,download failed or over 10 MB,0,0,
+physics,35,2608.08498,ok (abstract from arXiv metadata),4844,0,sample
+physics,36,2609.26966,ok (abstract from arXiv metadata); numbered references cut,7600,0,sample
+physics,37,2605.04774,download failed or over 10 MB,0,0,
+physics,38,2605.10011,no abstract,0,0,
+physics,39,2607.06819,ok (abstract from arXiv metadata),7264,0,sample
+physics,40,2609.13884,ok,15508,0,sample
+physics,41,2604.00366,no abstract,0,0,
+physics,42,2607.17856,download failed or over 10 MB,0,0,
+physics,43,2608.17602,download failed or over 10 MB,0,0,
+physics,44,2608.06357,ok (abstract from arXiv metadata),8689,0,sample
+physics,45,2609.05177,ok,11282,0,sample
+physics,46,2606.15853,ok (abstract from arXiv metadata); numbered references cut,4434,0,sample
+physics,47,2608.14889,no abstract,0,0,
+physics,48,2609.29971,download failed or over 10 MB,0,0,
+physics,49,2607.10348,no abstract,0,0,
+physics,50,2607.17027,ok (abstract from arXiv metadata),6834,0,sample
+physics,51,2606.00742,ok,7692,0,sample
+physics,52,2607.21827,no abstract,0,0,
+physics,53,2610.24208,no abstract,0,0,
+physics,54,2604.06890,ok,6855,0,sample
+economics,0,2608.24129,ok,16000,1,smoke
+economics,1,2606.31935,ok,16000,1,sample
+economics,2,2610.34771,ok,16000,1,sample
+economics,3,2605.12676,ok,12705,0,sample
+economics,4,2610.34508,ok,16000,1,sample
+economics,5,2610.36634,ok,16000,1,sample
+economics,6,2610.10939,ok,11815,0,sample
+economics,7,2604.11243,ok,10706,0,sample
+economics,8,2605.23616,ok,16000,1,sample
+economics,9,2610.31817,ok (abstract from arXiv metadata),16000,1,sample
+economics,10,2609.08335,ok,16000,1,sample
+economics,11,2609.27691,ok,16000,1,sample
+economics,12,2610.25238,ok (abstract from arXiv metadata),12665,0,sample
+economics,13,2604.20664,ok,16000,1,sample
+economics,14,2607.12371,ok,16000,1,sample
+economics,15,2608.05355,ok,16000,1,sample
+economics,16,2609.18976,ok,13539,0,sample
+economics,17,2610.41294,ok (abstract from arXiv metadata),16000,1,sample
+economics,18,2608.05444,ok,13085,0,sample
+economics,19,2609.32076,ok,16000,1,sample
+economics,20,2606.11053,ok,16000,1,sample
+economics,21,2608.14017,ok,13345,0,sample
+economics,22,2605.01763,ok,14540,0,sample
+economics,23,2607.28230,"excluded: reference list on one line, not cut",8119,0,
+economics,24,2607.00869,ok,16000,1,sample
+economics,25,2605.08782,ok,14505,0,sample
+economics,26,2608.29488,ok,16000,1,sample
+economics,27,2609.07871,ok,16000,1,sample
+economics,28,2610.12350,ok,16000,1,sample
+economics,29,2606.04142,ok,16000,1,sample
+economics,30,2609.05792,ok,16000,1,sample
+economics,31,2607.05660,ok,6344,0,sample
+economics,32,2605.09136,ok,16000,1,sample
+economics,33,2607.03962,ok,16000,1,sample
+economics,34,2609.15802,ok,16000,1,sample
+economics,35,2608.09882,ok,13199,0,sample

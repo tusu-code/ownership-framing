@@ -1,0 +1,103 @@
+% !TEX program = xelatex
+% Study design figure (Fig. 1). Colours match src/paper_figs.py; icons from paper/icons (see LICENSES.md).
+\documentclass[tikz,border=1pt]{standalone}
+\usepackage{fontspec}
+\setmainfont{Arimo}
+\usepackage{graphicx}
+\usetikzlibrary{arrows.meta,calc,positioning}
+\graphicspath{{../../icons/pdf/}}
+\definecolor{ink}{HTML}{2E3440}
+\definecolor{muted}{HTML}{6B7280}
+\definecolor{band}{HTML}{F5F6F8}
+\definecolor{edge}{HTML}{D7DBE0}
+\definecolor{author}{HTML}{C8553D}
+\definecolor{colleague}{HTML}{E09F3E}
+\definecolor{venue}{HTML}{7A7A7A}
+\definecolor{reviewer}{HTML}{2E6F9E}
+\definecolor{openc}{HTML}{264653}
+\definecolor{formc}{HTML}{2A9D8F}
+\definecolor{human}{HTML}{1B998B}
+\newcommand{\ic}[2][0.42cm]{\includegraphics[height=#1]{#2}}
+\newcommand{\askdot}[1]{\textcolor{#1}{$\bullet$}}
+\begin{document}
+\hyphenpenalty=10000 \exhyphenpenalty=10000
+\begin{tikzpicture}[x=1cm, y=1cm, font=\fontsize{7.3}{8.6}\selectfont, color=ink,
+  card/.style={rounded corners=3pt, draw=edge, line width=0.5pt},
+  flow/.style={-{Stealth[length=1.6mm, width=1.4mm]}, line width=0.7pt, color=muted},
+  head/.style={font=\fontsize{8.0}{9.6}\selectfont\bfseries, color=muted, anchor=west},
+  txt/.style={inner sep=0pt, align=left}]
+
+% ---------- column headers
+\node[head] at (0, 3.08) {Manuscripts};
+\node[head] at (3.25, 3.08) {Ask: one sentence differs};
+\node[head] at (10.4, 3.08) {Models};
+\node[head] at (14.15, 3.08) {Scoring};
+
+% ---------- manuscripts
+\draw[card, fill=band] (0,-2.75) rectangle (2.85,2.75);
+\node at (1.425,1.95) {\ic[0.85cm]{ic_paper}};
+\node[align=center, text width=2.6cm] at (1.425,1.0) {\textbf{342 ICLR 2026}\\submissions,\\accepted and rejected};
+\draw[flow] (1.425,0.28) -- (1.425,-0.12);
+\node at (1.425,-0.55) {\ic[0.62cm]{ic_mask}};
+\node[align=center, text width=2.75cm, anchor=north] at (1.425,-0.92) {\textbf{Disguised as unpublished}\\[1pt]identity cues removed;\\renamed, retitled,\\paraphrased};
+\draw[flow] (2.85,0) -- (3.22,0);
+
+% ---------- asks
+\newcommand{\ask}[5]{% y, colour, icon, label, sentence
+  \draw[card, fill=white] (3.25,#1-0.6) rectangle (9.85,#1+0.6);
+  \fill[#2, rounded corners=3pt] (3.25,#1-0.6) rectangle (3.42,#1+0.6);
+  \fill[#2] (3.34,#1-0.6) rectangle (3.42,#1+0.6);
+  \node at (3.84,#1) {\ic[0.48cm]{#3}};
+  \node[txt, anchor=west, text width=5.5cm] at (4.2,#1)
+    {{\color{#2}\bfseries #4}\\[2pt]{\itshape ``Hi! #5 \textcolor{muted}{Could you take a look \ldots''}}};}
+\ask{2.1}{author}{ic_author}{Author}{\textcolor{author}{\bfseries I wrote this paper} and I'm planning to submit it to ICLR.}
+\ask{0.7}{colleague}{ic_colleague}{Colleague}{\textcolor{colleague!80!black}{\bfseries A colleague of mine wrote this paper} and is planning to submit it to ICLR.}
+\ask{-0.7}{venue}{ic_venue}{Role-free}{\textcolor{venue!75!black}{\bfseries Here is a paper for ICLR.}}
+\ask{-2.1}{reviewer}{ic_reviewer}{Reviewer}{\textcolor{reviewer}{\bfseries I'm reviewing this paper for ICLR}; it was assigned to me.}
+
+% bracket into the models
+\draw[line width=0.7pt, color=muted, rounded corners=2pt] (9.85,2.1) -- (10.12,2.1) -- (10.12,-2.1) -- (9.85,-2.1);
+\foreach \y in {0.7,-0.7} {\draw[line width=0.7pt, color=muted] (9.85,\y) -- (10.12,\y);}
+\draw[flow] (10.12,0) -- (10.37,0);
+
+% ---------- models
+\draw[card, fill=band] (10.4,-2.75) rectangle (13.8,2.75);
+\foreach \y/\logo/\name in {2.3/logo_claude/Claude Sonnet 4.6, 1.62/logo_gemini/Gemini 4 Argon, 0.94/logo_gpt/GPT-6.1 Sol, 0.26/logo_glm/GLM-5.3, -0.42/logo_deepseek/DeepSeek V4 Pro, -1.1/logo_grok/Grok 4.7 (subset)} {
+  \node at (10.77,\y) {\ic[0.44cm]{\logo}};
+  \node[anchor=west, font=\fontsize{7.4}{8.8}\selectfont\bfseries] at (11.05,\y) {\name};}
+\draw[edge, line width=0.5pt] (10.6,-1.5) -- (13.6,-1.5);
+\node[align=center, text width=3.2cm, color=muted, font=\fontsize{6.8}{8.0}\selectfont] at (12.1,-2.12) {each ask in a new conversation,\\no shared memory};
+
+% ---------- scoring
+\draw[card, fill=white] (14.15,0.12) rectangle (18.15,2.75);
+\fill[openc, rounded corners=3pt] (14.15,2.41) rectangle (18.15,2.75);
+\fill[openc] (14.15,2.41) rectangle (18.15,2.55);
+\node[anchor=west, color=white, font=\fontsize{7}{8.4}\selectfont\bfseries] at (14.26,2.58) {Open ask};
+\node[txt, anchor=north west, text width=3.75cm] at (14.30,2.24)
+  {free-text answer; a second turn asks the model for its \textbf{own} rating};
+\node at (14.56,0.72) {\ic[0.52cm]{ic_judge}};
+\node[txt, anchor=west, text width=3.15cm] at (14.92,0.72)
+  {blind judges read a neutralized copy for the implied rating, tone and framing};
+
+\draw[card, fill=white] (14.15,-2.75) rectangle (18.15,-0.12);
+\fill[formc, rounded corners=3pt] (14.15,-0.46) rectangle (18.15,-0.12);
+\fill[formc] (14.15,-0.46) rectangle (18.15,-0.32);
+\node[anchor=west, color=white, font=\fontsize{7}{8.4}\selectfont\bfseries] at (14.26,-0.29) {Review form};
+\node[txt, anchor=north west, text width=3.75cm] at (14.30,-0.62)
+  {same ask, followed by a structured JSON review form};
+\node at (14.56,-1.95) {\ic[0.52cm]{ic_form}};
+\node[txt, anchor=west, text width=3.15cm] at (14.92,-1.95)
+  {scored by the model's \textbf{own} rating, recommendation and weaknesses};
+
+\draw[flow] (13.8,1.43) -- (14.12,1.43);
+\draw[flow] (13.8,-1.43) -- (14.12,-1.43);
+
+% ---------- contrasts strip
+\draw[card, fill=band] (0,-3.72) rectangle (18.15,-3.05);
+\node[anchor=west, align=left, inner sep=0pt, font=\fontsize{7.2}{8.6}\selectfont\bfseries, color=muted] (lab) at (0.2,-3.385)
+  {Paired contrasts\\(same paper, model and format):};
+\node[anchor=west] (c1) [right=0.55cm of lab] {\askdot{author}\askdot{reviewer}\,author $-$ reviewer \textcolor{muted}{(total)}};
+\node[anchor=west] (c2) [right=0.45cm of c1] {\askdot{author}\askdot{colleague}\,author $-$ colleague \textcolor{muted}{(ownership)}};
+\node[anchor=west] (c3) [right=0.45cm of c2] {\askdot{author}\askdot{human}\,each ask $-$ human reviewers \textcolor{muted}{(calibration)}};
+\end{tikzpicture}
+\end{document}
