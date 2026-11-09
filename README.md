@@ -68,6 +68,19 @@ Run from the repository root. Every step skips finished work, so it can be stopp
 
 The shell scripts in `src/` (`rev_chain.sh`, `rev_extra.sh`, `rev2_chain.sh` and others) run these steps per model in the order used in the study. The analysis reads `full_study/data` and `full_study/results`; link them to the collection output with `mkdir -p full_study && ln -s ../data full_study/data && ln -s ../results full_study/results`. Early pilot scripts (`analyze.py`, `analyze_p2.py`, `status_probe.py`) and interim checks (`round3_check.py`, `gemgrok_check.py`, `revision_check.py`) are kept for completeness.
 
+## Consequences and real requests (added 8 November 2026, exploratory)
+
+| Step | Command |
+|---|---|
+| Verdicts against ICLR's decisions, one-reviewer yardstick, illustrative acceptance curve | `python src/human_scale.py` (reads `full_study/out/cells.csv`, `data/raw/meta_396.csv`, `data/raw/papers_iclr2026.csv`: paper_id, title, decision, n, mean for all ICLR 2026 submissions) |
+| WildChat-1M candidates (place the parquet files of `allenai/WildChat-1M` in `data/wildchat/`) | `python wildchat/src/candidates.py` |
+| Three classifiers (DeepSeek V4.1 Flash, Claude Haiku 4.5, GPT-6.1 Sol; set `WILDCHAT_BASE_URL` and the keys in `.env`) | `python wildchat/src/classify.py`; `--judge haiku`; `--judge gpt --only-union` |
+| Majority labels, shares, agreement, per-user sensitivity | `python wildchat/src/summarize.py` |
+| Blind hand-audit sheet (labels hidden) | `python wildchat/src/build_audit.py` |
+| Figures 4 and 7 | `python src/fig_people.py` |
+
+The inputs and outputs of these analyses (without any WildChat user text) are in the addendum of the data release.
+
 ## Registered studies
 
 Each follows the same steps; see the docstring of each script and the study's `PREREGISTRATION.md`.

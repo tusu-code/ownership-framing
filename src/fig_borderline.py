@@ -97,7 +97,7 @@ def numbers(w):
 
 
 def figure(w):
-    fig, axes = plt.subplots(1, 2, figsize=(7.1, 2.6), gridspec_kw={"width_ratios": [1.45, 1], "wspace": 0.42})
+    fig, axes = plt.subplots(1, 2, figsize=(F.FIG_W * 1.185, 2.6), gridspec_kw={"width_ratios": [1.3, 1], "wspace": 0.36})
 
     ax = axes[0]
     g = w.groupby("bin", observed=True)
@@ -105,15 +105,15 @@ def figure(w):
     accA, accR = g.author.mean().to_numpy(), g.reviewer.mean().to_numpy()
     n = g.size().to_numpy()
     ax.axvspan(1.5, 3.5, color=F.BAND, zorder=0, lw=0)
-    ax.text(2.5, 1.06, "borderline", ha="center", va="top", fontsize=6.8, color=F.MUTED, style="italic")
+    ax.text(2.5, 1.06, "borderline", ha="center", va="top", fontsize=F.FS_TICK, color=F.MUTED, style="italic")
     bw = 0.36
     ax.bar(x - bw / 2, accA, bw * 0.92, color=F.G2[0], edgecolor=F.INK, linewidth=0.5, zorder=3, label="I wrote it")
     ax.bar(x + bw / 2, accR, bw * 0.92, color=F.G2[1], edgecolor=F.INK, linewidth=0.5, zorder=3, label="I am reviewing it")
     for i in range(len(x)):
-        ax.text(x[i] - bw / 2, accA[i] + 0.012, f"{accA[i] * 100:.0f}", ha="center", va="bottom", fontsize=6.2)
-        ax.text(x[i] + bw / 2, accR[i] + 0.012, f"{accR[i] * 100:.0f}", ha="center", va="bottom", fontsize=6.2)
+        ax.text(x[i] - bw / 2, accA[i] + 0.012, f"{accA[i] * 100:.0f}", ha="center", va="bottom", fontsize=F.FS_SMALL)
+        ax.text(x[i] + bw / 2, accR[i] + 0.012, f"{accR[i] * 100:.0f}", ha="center", va="bottom", fontsize=F.FS_SMALL)
         ax.text(x[i], max(accA[i], accR[i]) + 0.075, f"{(accA[i] - accR[i]) * 100:+.0f}", ha="center", va="bottom",
-                fontsize=6.6, color=F.INK, fontweight="bold")
+                fontsize=F.FS_SMALL, color=F.INK, fontweight="bold")
     ax.set_xticks(x)
     ax.set_xticklabels([f"{b}\n(n={k})" for b, k in zip(BIN_LABEL, n)])
     ax.tick_params(axis="x", length=0)
@@ -132,21 +132,22 @@ def figure(w):
     F.header(ax, "a", "Acceptance by the paper's standing with ICLR reviewers", y=1.16)
 
     ax = axes[1]
-    rows = [("border", 0, "Borderline,\nrejected by ICLR"), ("border", 1, "Borderline,\naccepted by ICLR"),
-            ("other", 0, "Other,\nrejected by ICLR"), ("other", 1, "Other,\naccepted by ICLR")]
+    ns = []
+    rows = [("border", 0, "Borderline,\nrejected"), ("border", 1, "Borderline,\naccepted"),
+            ("other", 0, "Other,\nrejected"), ("other", 1, "Other,\naccepted")]
     for i, (b, h, lab) in enumerate(rows):
         s = w[(w.border == (b == "border")) & (w.human_accept == h)]
         ao, ro = s.ao.mean(), s.ro.mean()
-        ax.barh(i, ao * 100, 0.62, color=F.G2[0], edgecolor=F.INK, linewidth=0.5, zorder=3, label="Only the author's accepted" if i == 0 else None)
-        ax.barh(i, -ro * 100, 0.62, color=F.G2[1], edgecolor=F.INK, linewidth=0.5, zorder=3, label="Only the reviewer's accepted" if i == 0 else None)
-        ax.text(ao * 100 + 0.8, i, f"{int(s.ao.sum())}", va="center", ha="left", fontsize=6.6)
-        ax.text(-ro * 100 - 0.8, i, f"{int(s.ro.sum())}", va="center", ha="right", fontsize=6.6)
-        ax.text(37, i, f"n={len(s)}", va="center", ha="right", fontsize=6.4, color=F.MUTED)
+        ax.barh(i, ao * 100, 0.62, color=F.G2[0], edgecolor=F.INK, linewidth=0.5, zorder=3, label="Author only" if i == 0 else None)
+        ax.barh(i, -ro * 100, 0.62, color=F.G2[1], edgecolor=F.INK, linewidth=0.5, zorder=3, label="Reviewer only" if i == 0 else None)
+        ax.text(ao * 100 + 0.8, i, f"{int(s.ao.sum())}", va="center", ha="left", fontsize=F.FS_SMALL)
+        ax.text(-ro * 100 - 0.8, i, f"{int(s.ro.sum())}", va="center", ha="right", fontsize=F.FS_SMALL)
+        ns.append(len(s))
     ax.axvline(0, color=F.INK, lw=0.6, zorder=4)
     ax.set_yticks(range(len(rows)))
-    ax.set_yticklabels([r[2] for r in rows])
+    ax.set_yticklabels([f"{r[2]} ({k})" for r, k in zip(rows, ns)], linespacing=1.15)
     ax.set_ylim(len(rows) - 0.5, -0.5)
-    ax.set_xlim(-12, 39.5)
+    ax.set_xlim(-10, 30)
     ax.set_xticks([-10, 0, 10, 20])
     ax.set_xticklabels(["10", "0", "10", "20"])
     ax.set_xlabel("Papers with opposite verdicts (%)")
@@ -155,7 +156,7 @@ def figure(w):
     for s_ in ("left", "top", "right", "bottom"):
         ax.spines[s_].set_visible(True)
     ax.tick_params(axis="y", length=0)
-    ax.legend(loc="lower left", bbox_to_anchor=(-0.02, 1.0), ncol=2, handletextpad=0.3, columnspacing=0.9, borderaxespad=0.2, handlelength=1.0)
+    ax.legend(loc="lower left", bbox_to_anchor=(0, 1.0), ncol=2, handletextpad=0.3, columnspacing=0.6, borderaxespad=0.2, handlelength=1.0)
     F.header(ax, "b", "Which papers flip", y=1.16)
     F.save(fig, "fig_borderline")
 

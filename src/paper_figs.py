@@ -37,9 +37,13 @@ ASK_LABEL = {"author": "I wrote it", "colleague": "A colleague wrote it", "venue
 FMT = {"open": ("#264653", "o", "Open ask"), "struct": ("#2A9D8F", "D", "Review form")}
 BORDER, OTHER = "#6A4C93", "#A3A9B3"
 
+# One type scale for every figure, in points at print size (figures are drawn at the text width, 6.45 in, and
+# included unscaled): axis labels 7, tick labels and legends 6.5, values and notes 6, panel titles 7.5, letters 8.5.
+FS_BASE, FS_TICK, FS_SMALL, FS_TITLE, FS_LETTER = 7.0, 6.5, 6.0, 7.5, 8.5
+FIG_W = 6.45
 plt.rcParams.update({
-    "font.family": ["Arimo", "Liberation Sans", "DejaVu Sans"], "font.size": 7.5, "axes.labelsize": 7.5,
-    "axes.titlesize": 8, "xtick.labelsize": 7, "ytick.labelsize": 7.5, "legend.fontsize": 7,
+    "font.family": ["Arimo", "Liberation Sans", "DejaVu Sans"], "font.size": FS_BASE, "axes.labelsize": FS_BASE,
+    "axes.titlesize": FS_TITLE, "xtick.labelsize": FS_TICK, "ytick.labelsize": FS_TICK, "legend.fontsize": FS_TICK,
     "axes.edgecolor": INK, "axes.labelcolor": INK, "xtick.color": INK, "ytick.color": INK, "text.color": INK,
     "axes.linewidth": 0.6, "xtick.major.width": 0.6, "ytick.major.width": 0, "xtick.major.size": 2.5,
     "axes.spines.top": False, "axes.spines.right": False, "axes.spines.left": False,
@@ -88,8 +92,8 @@ def point(ax, e, y, color, marker="o", key=("est", "lo", "hi"), scale=1.0, size=
 
 
 def header(ax, letter, title, y=1.13):
-    ax.text(-0.02, y, letter, transform=ax.transAxes, fontsize=9, fontweight="bold", ha="right", va="bottom")
-    ax.text(0.0, y, title, transform=ax.transAxes, fontsize=8, fontweight="bold", ha="left", va="bottom")
+    ax.text(-0.02, y, letter, transform=ax.transAxes, fontsize=FS_LETTER, fontweight="bold", ha="right", va="bottom")
+    ax.text(0.0, y, title, transform=ax.transAxes, fontsize=FS_TITLE, fontweight="bold", ha="left", va="bottom")
 
 
 def save(fig, name):
@@ -148,8 +152,9 @@ def est3(e):
     return e.get("diff", e.get("est")), e["lo"], e["hi"]
 
 
-def bars(ax, groups, series, width=0.78, fmt="{:+.2f}", fs=6.0):
+def bars(ax, groups, series, width=0.78, fmt="{:+.2f}", fs=None):
     """groups: x labels; series: (label, colour, hatch, [estimate dict or None per group])."""
+    fs = fs or FS_SMALL
     n = len(series)
     w = width / n
     for j, (lab, col, hatch, vals) in enumerate(series):
@@ -195,7 +200,7 @@ def logo_under(ax, models, size=10.0, pad=26):
 def fig_effects():
     """a, author - reviewer on the models' own scores; b, each ask minus the role-free ask, own scores."""
     ss = R["revision"]["selfscore"]
-    fig, axes = plt.subplots(1, 2, figsize=(7.1, 2.9), gridspec_kw={"width_ratios": [1.25, 1], "wspace": 0.3})
+    fig, axes = plt.subplots(1, 2, figsize=(FIG_W * 1.112, 2.9), gridspec_kw={"width_ratios": [1.45, 1], "wspace": 0.3})
     ax = axes[0]
     bar_frame(ax, "Author $-$ reviewer rating (0–10)", (-0.4, 1.4))
     bars(ax, [WRAP[m] for m in EFF_MODELS], [
@@ -223,7 +228,7 @@ def fig_effects():
 def fig_judges():
     """a, author - reviewer on the same answers: own score vs two judges; b, warm minus cold rewrite of one assessment."""
     ss = R["revision"]["selfscore"]
-    fig, axes = plt.subplots(1, 2, figsize=(7.1, 2.6), gridspec_kw={"width_ratios": [1.5, 1], "wspace": 0.28})
+    fig, axes = plt.subplots(1, 2, figsize=(FIG_W * 1.124, 2.6), gridspec_kw={"width_ratios": [1.5, 1], "wspace": 0.28})
     ax = axes[0]
     ms = ["claude", "gemini", "deepseek", "glm"]
     bar_frame(ax, "Author $-$ reviewer, same answers", (-0.4, 2.15))
@@ -232,7 +237,7 @@ def fig_judges():
         for col, c, lab in (("self", G3[0], "Own score"), ("main", G3[1], "Read by MiniMax"),
                             ("flash", G3[2], "Read by DeepSeek Flash"))])
     logo_under(ax, ms)
-    ax.legend(loc="upper left", ncol=3, handlelength=1.0, handletextpad=0.35, columnspacing=0.6, fontsize=6.6,
+    ax.legend(loc="upper left", ncol=3, handlelength=1.0, handletextpad=0.35, columnspacing=0.6, fontsize=FS_TICK,
               borderaxespad=0.3)
     header(ax, "a", "The text conveys a larger gap than the verdict", y=1.03)
 
@@ -251,7 +256,7 @@ def fig_judges():
 def fig_instruction():
     """a, Gemini, own score, from the natural ask to the fixed instruction; b, fixed instruction in both formats."""
     ss = R["revision"]["selfscore"]
-    fig, axes = plt.subplots(1, 2, figsize=(7.1, 2.7), gridspec_kw={"width_ratios": [1, 1.1], "wspace": 0.28})
+    fig, axes = plt.subplots(1, 2, figsize=(FIG_W, 2.7), gridspec_kw={"width_ratios": [1, 1.1], "wspace": 0.28})
     ax = axes[0]
     steps = [("open", "Natural\nask"), ("ablorder", "Ask after\nthe paper"), ("ablrole", "“Review it\nas a\nreviewer\nwould”"),
              ("ablmerits", "+ “Judge it\non its\nmerits”"), ("fixedopen", "Fixed\ninstruction")]
@@ -260,7 +265,7 @@ def fig_instruction():
     for j, (k, _) in enumerate(steps):      # one series per bar so the colour can change along the ladder
         vals = [lad[k] if i == j else None for i in range(len(steps))]
         bars(ax, [lab for _, lab in steps], [(None, G5[j], None, vals)], width=0.6)
-    ax.tick_params(axis="x", pad=3, labelsize=5.8)
+    ax.tick_params(axis="x", pad=3, labelsize=FS_SMALL)
     header(ax, "a", "The request to review is the step that acts", y=1.03)
 
     ax = axes[1]
@@ -278,7 +283,7 @@ def fig_instruction():
 
 def fig_ownership():
     """a, same-batch contrasts that isolate ownership; b, the main and a second judge on the same answers."""
-    fig, axes = plt.subplots(1, 2, figsize=(7.1, 2.75), gridspec_kw={"width_ratios": [1, 1], "wspace": 1.05})
+    fig, axes = plt.subplots(1, 2, figsize=(FIG_W, 2.75), gridspec_kw={"width_ratios": [1, 1], "wspace": 1.05})
 
     ax = axes[0]
     keys = [("claude_open", "claude", "Claude Sonnet 4.6"), ("claude_struct", "claude", "Claude Sonnet 4.6\n(review form)"),
@@ -312,7 +317,7 @@ def fig_ownership():
 
 
 def fig_mechanism():
-    fig, axes = plt.subplots(1, 3, figsize=(7.1, 2.35), gridspec_kw={"wspace": 0.42})
+    fig, axes = plt.subplots(1, 3, figsize=(FIG_W * 1.127, 2.35), gridspec_kw={"wspace": 0.42})
     pp = lambda e: {k: e[k] * 100 for k in ("diff", "lo", "hi")}   # noqa: E731
     panels = [("Warmer tone", "Author $-$ reviewer (1–7 scale)", lambda m: R["models"][m]["paired"]["open"]["tone"], (0, 1.55), "{:+.2f}"),
               ("Problems framed as fixable", "Author $-$ reviewer (points)", lambda m: pp(R["models"][m]["paired"]["open"]["fixable"]), (0, 78), "{:+.0f}"),
@@ -320,16 +325,16 @@ def fig_mechanism():
     for k, (ax, (title, ylab, get, ylim, fmt)) in enumerate(zip(axes, panels)):
         bar_frame(ax, ylab, ylim)
         for j, m in enumerate(MODELS):      # one series per model: each bar in its model's colour
-            bars(ax, [SHORT[x] for x in MODELS], [(None, MODEL_C[m], None, [get(m) if i == j else None for i in range(len(MODELS))])],
-                 width=0.62, fmt=fmt, fs=5.8)
+            bars(ax, [SHORT[x] if x != "deepseek" else "Deep-\nSeek" for x in MODELS], [(None, MODEL_C[m], None, [get(m) if i == j else None for i in range(len(MODELS))])],
+                 width=0.62, fmt=fmt, fs=FS_SMALL)
         logo_under(ax, MODELS, size=9.0)
-        ax.tick_params(axis="x", labelsize=5.0)     # horizontal labels; rotated ones crowded the logos
+        ax.tick_params(axis="x", labelsize=FS_SMALL)     # horizontal labels; rotated ones crowded the logos
         header(ax, "abc"[k], title, y=1.03)
     save(fig, "fig_mechanism")
 
 
 def fig_decisions():
-    fig, axes = plt.subplots(1, 2, figsize=(7.1, 3.15), gridspec_kw={"width_ratios": [1.25, 1], "wspace": 0.55})
+    fig, axes = plt.subplots(1, 2, figsize=(FIG_W, 3.15), gridspec_kw={"width_ratios": [1.25, 1], "wspace": 0.55})
 
     ax = axes[0]
     groups = ["claude", "gemini", "glm", "deepseek"]
@@ -345,10 +350,10 @@ def fig_decisions():
             val = R["calibration"][m][fmt][who]["accept"]
             ax.bar(x, val, w * 0.92, color=col, hatch=hatch, edgecolor="white", linewidth=0.4, zorder=3,
                    alpha=0.55 if fmt == "fixed" else 1.0, label=lab if i == 0 else None)
-            ax.text(x, val + 0.012, f"{val * 100:.0f}", ha="center", va="bottom", fontsize=6.0, color=INK)
+            ax.text(x, val + 0.012, f"{val * 100:.0f}", ha="center", va="bottom", fontsize=FS_SMALL, color=INK)
     hum = R["calibration_human_accept"]
     ax.axhline(hum, color=HUMAN, lw=1.0, zorder=2)
-    ax.text(len(groups) - 0.45, hum + 0.015, f"ICLR {hum * 100:.0f}%", ha="right", va="bottom", fontsize=5.6, color=HUMAN, style="italic")
+    ax.text(len(groups) - 0.45, hum + 0.015, f"ICLR {hum * 100:.0f}%", ha="right", va="bottom", fontsize=FS_SMALL, color=HUMAN, style="italic")
     ax.set_xticks(range(len(groups)))
     ax.set_xticklabels([SHORT[m] for m in groups])
     ax.tick_params(axis="x", pad=15, length=0)
@@ -361,7 +366,7 @@ def fig_decisions():
     ax.set_ylabel("Recommended for acceptance (%)")
     ax.grid(axis="y", color=GRID, lw=0.5, zorder=0)
     ax.legend(loc="lower left", bbox_to_anchor=(0, 1.0), ncol=3, handletextpad=0.3, columnspacing=0.8,
-              borderaxespad=0.2, handlelength=1.2, fontsize=6)
+              borderaxespad=0.2, handlelength=1.2, fontsize=FS_TICK)
     header(ax, "a", "Acceptance on the review form", y=1.2)
 
     ax = axes[1]

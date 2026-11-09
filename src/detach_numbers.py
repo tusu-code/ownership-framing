@@ -62,6 +62,7 @@ def main():
         e = P[k]
         V[f"dt/{k}/ci"] = f"{s(e['est'])} [{u(e['lo'])}, {u(e['hi'])}]"
         V[f"dt/{k}/d"], V[f"dt/{k}/u"], V[f"dt/{k}/p"] = s(e["est"]), u(abs(e["est"])), pv(e["p"])
+        V[f"dt/{k}/uci"] = f"{u(abs(e['est']))} [{u(e['lo'])}, {u(e['hi'])}]"   # size of a positive reduction, unsigned
     e = P["H3"]
     V["dt/H3/ci"] = f"{s(e['est'])} [{u(e['lo'])}, {u(e['hi'])}]"
     V["dt/H3/ci90"] = f"{s(e['est'])} [{s(e['ci90'][0])}, {s(e['ci90'][1])}]"
